@@ -1,3 +1,5 @@
+import {RefObject} from "react";
+
 export type Game = {
     id: number,
     title: string,
@@ -25,3 +27,4 @@ export type GameMininmified = {
     thumbnail: string,
     release_date: string,
 }
+

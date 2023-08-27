@@ -10,7 +10,7 @@ function App() {
     return (
             <Provider store={store}>
                 <div className={styles.container}>
-                <h1 className={styles.title}>Главная</h1>
+                <h1 className={styles.title}>games</h1>
                     <BrowserRouter>
                             <Routes>
                                 <Route path="/" element={<Home/>}/>
