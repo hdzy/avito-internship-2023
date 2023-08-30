@@ -1,21 +1,18 @@
 import React from 'react';
 import {Provider} from "react-redux";
 import store from "./store/index";
-import {Route, Routes} from "react-router";
 import {BrowserRouter} from "react-router-dom";
 import styles from './App.module.css'
-import Home from "./pages/Home/Home";
+import AppRouter from "./components/Routes/AppRouter";
+import Header from "./components/Header/Header";
 
 function App() {
     return (
             <Provider store={store}>
                 <div className={styles.container}>
-                <h1 className={styles.title}>games</h1>
                     <BrowserRouter>
-                            <Routes>
-                                <Route path="/" element={<Home/>}/>
-                                <Route path="/tickets"/>
-                            </Routes>
+                        <Header/>
+                        <AppRouter/>
                     </BrowserRouter>
                 </div>
 

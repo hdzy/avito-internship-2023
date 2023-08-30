@@ -18,11 +18,26 @@ app.get('/games/amount', (req, res) => {
         });
 })
 app.get('/games', (req, res) => {
-    fetch("https://www.freetogame.com/api/games")
+
+    let requestQuery = '?';
+    for (const [key, value] of Object.entries(req.query)) {
+        if (key !== 'start' && key !== 'end' && key !== 'direction') {
+            requestQuery += `${key}=${value}&`;
+        }
+    }
+
+    fetch(`https://www.freetogame.com/api/games/${requestQuery}`)
         .then((res)=> res.json())
         .then((data)=> {
-            const dataSliced = data.slice(req.query.start, req.query.end);
-            res.send(dataSliced);
+
+            let modifiedData = data;
+
+            if (req.query.direction) {
+                modifiedData = data.reverse();
+            }
+
+             const dataSliced = modifiedData.slice(req.query.start, req.query.end);
+             res.send(dataSliced);
         })
         .catch((err)=>{
             res.send(err);

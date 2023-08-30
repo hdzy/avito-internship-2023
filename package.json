@@ -7,11 +7,15 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/antd": "^1.0.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.44",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "@types/react-router-dom": "^5.3.3",
+    "antd": "^5.8.5",
     "axios": "^1.4.0",
+    "concurrently": "^8.2.1",
     "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -22,11 +26,14 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
+    "swiper": "^10.2.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set PORT=3001 && react-scripts start",
+    "start": "concurrently \"npm run server\" \"npm run front\"",
+    "front": " set PORT=3001 && react-scripts start",
+    "server": "node ./server/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -53,6 +60,7 @@
     "@types/react-redux": "^7.1.26",
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

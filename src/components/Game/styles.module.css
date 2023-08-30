@@ -3,6 +3,7 @@
     background: #323232;
     border-radius: 10px;
     transition: box-shadow, transform .3s ease-in-out;
+    text-decoration: none;
 }
 
 .container:hover {

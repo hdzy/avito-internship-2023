@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
 
+
 .container {
     background: #242424;
     height: 100%;
@@ -7,13 +8,4 @@
     width: 100%;
     font-family: "Roboto", sans-serif;
     padding-top: 20px;
-}
-
-.title {
-    width: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
-    font-size: 45px;
-    color: #fff;
-    font-family: "Quicksand", sans-serif;
 }

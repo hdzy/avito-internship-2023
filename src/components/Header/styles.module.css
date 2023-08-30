@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1440px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2em;
+    row-gap: 2em;
+}
+
+.title {
+    display: block;
+    text-decoration: none;
+    width: max-content;
+    font-size: 45px;
+    color: #fff;
+    font-family: "Quicksand", sans-serif;
+    cursor: pointer;
+}
+
+.sortContainer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
