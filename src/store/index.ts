@@ -1,10 +1,12 @@
 import {configureStore} from "@reduxjs/toolkit";
 import gamesReducer from "./gamesSlice";
+import gameReducer from './gameSlice';
 
 
 const store = configureStore({
     reducer: {
        games: gamesReducer,
+        game: gameReducer,
     },
 });
 

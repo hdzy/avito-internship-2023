@@ -1,53 +1,126 @@
 import {useParams} from "react-router";
 import styles from './styles.module.css';
-import React, {useEffect, useState} from "react";
-import {Game} from "../../types";
+import React, {useEffect} from "react";
+import {Game, GameWithTimer} from "../../types";
 import axios from "axios";
 import Slider from "../../ui/Slider/Slider";
 import GameInfo from "../../components/GameInfo/GameInfo";
 import LoadingElement from "../../ui/LoadingElement/LoadingElement";
+import { Modal } from "antd";
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import {errorGameLoading, gameLoading, updateGame} from "../../store/gameSlice";
 
+
+/**
+ * TODO: Decomposition
+ */
 export const GamePage = () => {
 
     const params = useParams();
     const id = params.id;
 
-    const [game, setGame] = useState<Game | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const dispatch = useAppDispatch();
 
-/*
+    const {
+        isLoading,
+        isError,
+        game,
+        requestRemains,
+    } = useAppSelector(state => state.game)
+
+    useEffect(() => {
+        if (game) {
+            savePage();
+        }
+    }, [game]);
+
     const savePage = () => {
 
-        if (id && game) {
-            let ids = window.sessionStorage.getItem('ids')?.split(',');
-            let games = window.sessionStorage.getItem('games')?.split(',');
+        const gameWithTimer: GameWithTimer = {
+            ...game,
+            timer: Date.now() + (1000 * 60 * 5)
+        }
 
-            if (ids && games && !ids.includes(id)) {
-                window.sessionStorage.setItem('ids', [...ids, id].toString());
-                window.sessionStorage.setItem(`games`, [...games, JSON.stringify(game)].toString());
-            } else {
-                window.sessionStorage.setItem('ids', id);
-                window.sessionStorage.setItem('games', JSON.stringify(game));
+        let gamesLocal = window.sessionStorage.getItem('games')
+
+        if (gamesLocal) {
+            let gamesArray: GameWithTimer[] = JSON.parse(gamesLocal);
+
+            const isSaved = gamesArray.find(e => e.id === gameWithTimer.id);
+
+            if (!isSaved) {
+                gamesArray.push(gameWithTimer);
+                const newArr = JSON.stringify(gamesArray);
+
+                window.sessionStorage.setItem('games', newArr);
             }
+
+        } else {
+            const newArr = JSON.stringify([gameWithTimer]);
+
+            window.sessionStorage.setItem('games', newArr);
         }
     }
 
-    savePage();
-*/
+    const getGameFromStorage = (id: number) => {
+
+        let gamesLocal = window.sessionStorage.getItem('games');
+
+        if (gamesLocal) {
+            let gamesArray: GameWithTimer[] = JSON.parse(gamesLocal);
+            const game = gamesArray.find(e => e.id === id);
+
+            if (game) delete game.timer
+
+            return game as Game;
+        } else return;
+    }
 
     useEffect(() => {
 
-        setIsLoading(true);
+        dispatch(gameLoading());
+        const game = getGameFromStorage(Number(id))
 
-        axios.get(`http://localhost:3000/game?id=${id}`)
-        .then(res => {
-            let releaseDate = res.data.release_date;
-            res.data.release_date = releaseDate.substring(releaseDate.length - 2) + '.' + releaseDate.substring(releaseDate.length - 5, releaseDate.length - 3) + '.' + releaseDate.substring(0, 4)
-            setGame(res.data);
-            setIsLoading(false);
-        })
-        .catch(err => console.log(err));
-    }, [])
+        if (game) {
+            dispatch(updateGame(game));
+        } else if (requestRemains >=0){
+            axios.get(`http://localhost:3000/game?id=${id}`)
+                .then(res => {
+                    let releaseDate = res.data.release_date;
+                    res.data.release_date = releaseDate.substring(releaseDate.length - 2) + '.' + releaseDate.substring(releaseDate.length - 5, releaseDate.length - 3) + '.' + releaseDate.substring(0, 4)
+                    dispatch(updateGame(res.data));
+                })
+                .catch((err) => {
+                    dispatch(errorGameLoading());
+                    modalError();
+                    console.log(err);
+                });
+        } else {
+            modalErrorLast();
+        }
+    }, [requestRemains])
+
+    const modalError = () => {
+        Modal.destroyAll();
+
+        Modal.error({
+            open: isError,
+            title: "Произошла ошибка",
+            content: `Попытка повторного запроса
+                      Осталось попыток: ${requestRemains}`
+        });
+    };
+
+    const modalErrorLast = () => {
+        Modal.destroyAll();
+
+        Modal.error({
+            open: isError,
+            title: "Произошла ошибка",
+            content: `К сожалению, не удалось загрузить данные`
+        });
+    }
+
 
 
     return (
@@ -56,7 +129,7 @@ export const GamePage = () => {
             {isLoading && <LoadingElement width={"100%"} height={100} marginTop={50}/>}
             {isLoading && <LoadingElement width={"100%"} height={500} marginTop={50}/>}
             {
-                    game &&
+                game &&
                 <GameInfo
                     title={game.title}
                     description={game.description}

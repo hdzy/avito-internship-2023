@@ -40,9 +40,29 @@ export type GameMininmified = {
     release_date: string,
 }
 
+export interface GameWithTimer{
+    id?: number,
+    title?: string,
+    status?: string,
+    thumbnail?: string,
+    short_description?: string,
+    description?: string,
+    game_url?: string,
+    genre?: string,
+    platform?: string,
+    publisher?: string,
+    developer?: string,
+    release_date?: string,
+    screenshots?: Screenshots[],
+    minimum_system_requirements?: SystemRequirements | undefined,
+    timer?: any,
+}
+
 export type GamesState = {
     games: GameMininmified[],
     isLoading: boolean,
+    isError: boolean,
+    requestRemains: number,
     amount: number,
     gamesLimits: GamesLimits,
     sort: Sorting,
@@ -54,6 +74,13 @@ export type GamesState = {
 type GamesLimits = {
     start: number,
     end: number,
+}
+
+export type GameState = {
+    game: Game | null,
+    isLoading: boolean,
+    isError: boolean,
+    requestRemains: number,
 }
 
 export type RouteType = {

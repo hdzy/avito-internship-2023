@@ -1,10 +1,11 @@
 import React, {ReactElement, useEffect} from 'react';
 import styles from './styles.module.css';
 import {useAppDispatch, useAppSelector} from "../../hooks";
-import {gamesLoading, gamesReceived} from "../../store/gamesSlice";
+import {gamesError, gamesLoading, gamesReceived} from "../../store/gamesSlice";
 import axios from "axios";
 import Game from "../Game/Game";
 import LoadingElement from "../../ui/LoadingElement/LoadingElement";
+import {Modal} from "antd";
 
 const loadingElems:ReactElement[] = [];
 
@@ -18,11 +19,13 @@ const GamesContainer = () => {
     const {
         games,
         isLoading,
+        isError,
         gamesLimits,
         sort,
         sortDirection,
         platform,
-        tags
+        tags,
+        requestRemains,
     } = useAppSelector(state => state.games);
 
     /*
@@ -41,18 +44,46 @@ const GamesContainer = () => {
             .replaceAll('\n', '')
             .replaceAll(' ', '');
 
+        if (requestRemains >=0){
         axios.get(`http://localhost:3000/games/${requestQuery}` )
             .then(res => {
                 dispatch(gamesReceived(res.data));
             })
             .catch((err) => {
                 console.log(err);
-            })
-    }, [gamesLimits]);
+                modalError()
+                dispatch(gamesError());
+            })}
+        else {
+            modalErrorLast();
+        }
+    }, [gamesLimits, requestRemains]);
+
+    const modalError = () => {
+        Modal.destroyAll();
+
+        Modal.error({
+            open: isError,
+            title: "Произошла ошибка",
+            content: `Попытка повторного запроса
+                      Осталось попыток: ${requestRemains}`
+        });
+    };
+
+    const modalErrorLast = () => {
+        Modal.destroyAll();
+
+        Modal.error({
+            open: isError,
+            title: "Произошла ошибка",
+            content: `К сожалению, не удалось загрузить данные`
+        });
+    }
 
     return (
         <div className={styles.container}>
             {
+                games.length < 1 ? <h1 style={{color: '#fff'}}>К сожалению, игр с данными параметрами не найдено</h1> :
                 games.map((e, index) => {
                     return <Game
                         key={e.id}

@@ -5,6 +5,8 @@ import {GameMininmified, GamesState, Platforms, SortDirection, Sorting} from "..
 const initialState: GamesState = {
     games: [],
     isLoading: true,
+    isError: false,
+    requestRemains: 3,
     amount: 0,
     gamesLimits: {
         start: 0,
@@ -28,13 +30,24 @@ const gamesSlice = createSlice({
         gamesReceived(state, action:PayloadAction<GameMininmified[]>) {
            const games = action.payload;
 
-            games.forEach((e) => {
-                let releaseDate = e.release_date;
-                e.release_date =  releaseDate.substring(releaseDate.length - 2) + '.' + releaseDate.substring(releaseDate.length - 5, releaseDate.length - 3) + '.' + releaseDate.substring(0, 4);
-            });
+            if (Object.keys(games).length < 1) {
+                state.isLoading = false;
+                state.isError = false;
+            } else {
+                games.forEach((e) => {
+                    let releaseDate = e.release_date;
+                    e.release_date =  releaseDate.substring(releaseDate.length - 2) + '.' + releaseDate.substring(releaseDate.length - 5, releaseDate.length - 3) + '.' + releaseDate.substring(0, 4);
+                });
 
-           state.games = [...state.games, ...games];
-           state.isLoading = false;
+                state.games = [...state.games, ...games];
+                state.isLoading = false;
+                state.isError = false;
+            }
+        },
+
+        gamesError(state) {
+            state.isError = true;
+            state.requestRemains = state.requestRemains - 1;
         },
 
         updateAmount(state, action:PayloadAction<number>) {
@@ -87,12 +100,9 @@ const gamesSlice = createSlice({
 
             const index = state.tags.indexOf(action.payload);
 
-            console.log(index)
-
             if (index === -1) {
                 state.tags.push(action.payload);
             } else {
-                console.log(state.tags[index]);
                 state.tags.splice(index, 1);
             }
 
@@ -112,6 +122,7 @@ export const {
     updateGamesLimits,
     updateAmount,
     gamesLoading,
+    gamesError,
     updateSortStatus,
     updateSortDirection,
     updatePlatformStatus,

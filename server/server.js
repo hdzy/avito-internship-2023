@@ -63,5 +63,5 @@ app.get('/game', (req, res) => {
 
 
 app.listen(3000, () => {
-    console.log('start!');
+    console.log('Server started on port 3000');
 });
