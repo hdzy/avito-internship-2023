@@ -1,0 +1,31 @@
+.title {
+    text-decoration: none;
+    width: max-content;
+    font-size: 45px;
+    color: #fff;
+    font-family: "Quicksand", sans-serif;
+    cursor: pointer;
+}
+
+.sortContainer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.rightContainer {
+    display: flex;
+    gap: 50px;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 384px) {
+    .container, .rightContainer {
+        justify-content: flex-start;
+    }
+
+    .sortContainer {
+        flex-direction: row-reverse;
+    }
+}

@@ -12,6 +12,11 @@ const Game: FC<GameProps>=({title,id, publisher, genre, thumbnail, release_date,
 
     const dispatch = useAppDispatch();
 
+    /**
+     * Создание Observer через кастомный хук,
+     * чтобы подгружать данные, когда последний загруженный элемент в области видимости
+     */
+
     let ref = null
     if (isLast) {
         ref = React.createRef<HTMLAnchorElement>()
@@ -22,7 +27,7 @@ const Game: FC<GameProps>=({title,id, publisher, genre, thumbnail, release_date,
         if (isIntersecting) {
             dispatch(updateGamesLimits());
         }
-    }, [isIntersecting])
+    }, [dispatch, isIntersecting])
 
 
     return (
@@ -41,26 +46,3 @@ const Game: FC<GameProps>=({title,id, publisher, genre, thumbnail, release_date,
 };
 
 export default Game;
-
-/*
-
-const Game: FC<GameMininmified> = ({title,id, publisher, genre, thumbnail, release_date}) => {
-    return (
-        <Link to={`/game/${id}`} className={styles.container}>
-            <img src={thumbnail} alt=""/>
-            <div className={styles.textContainer}>
-                <h2 className={styles.title}>{title}</h2>
-                <h3 className={styles.publisherTitle}>Издатель: <span className={styles.publisher}>{publisher}</span></h3>
-                <div className={styles.tagsContainer}>
-                    <p>{genre}</p>
-                    <p>{release_date}</p>
-                </div>
-            </div>
-        </Link>
-    );
-};
-
-export default Game;
-
-
- */

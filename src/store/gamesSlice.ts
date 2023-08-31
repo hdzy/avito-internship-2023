@@ -30,9 +30,10 @@ const gamesSlice = createSlice({
         gamesReceived(state, action:PayloadAction<GameMininmified[]>) {
            const games = action.payload;
 
-            if (Object.keys(games).length < 1) {
+            if (!games || Object.keys(games).length < 1) {
                 state.isLoading = false;
                 state.isError = false;
+                state.games = [];
             } else {
                 games.forEach((e) => {
                     let releaseDate = e.release_date;
@@ -54,14 +55,17 @@ const gamesSlice = createSlice({
             state.amount = action.payload;
         },
 
-        /*
-         * TODO: Ограничить максимальным количество игр запросы
-         */
-
         updateGamesLimits(state) {
+
+            let start = state.gamesLimits.start + 12;
+            let end = state.gamesLimits.end + 12;
+
+            if (start > state.amount) return;
+            if (end > state.amount) end = state.amount;
+
             state.gamesLimits = {
-                start: state.gamesLimits.start + 12,
-                end: state.gamesLimits.end + 12,
+                start: start,
+                end: end,
             };
         },
 

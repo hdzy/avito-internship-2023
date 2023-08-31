@@ -1,19 +1,15 @@
-import React, {FC, useState} from 'react';
+import React, { FC, useState} from 'react';
 import styles from './styles.module.css';
 import {Dropdown, Space} from "antd";
-import {FilterItem, Sorting} from "../../types";
+import {FilterItem, handlerFunction, Sorting} from "../../types";
 import {useAppDispatch} from "../../hooks";
 import {ActionCreatorWithoutPayload, ActionCreatorWithPayload} from "@reduxjs/toolkit";
-
-/**
- * TODO: Add Generic in filter props
- */
 
 type MenuProps = {
     items: FilterItem[],
     action: ActionCreatorWithoutPayload | ActionCreatorWithPayload<any>,
     defaultValue: string
-}
+};
 
 const Menu: FC<MenuProps> =({items, action, defaultValue}) => {
 
@@ -21,10 +17,7 @@ const Menu: FC<MenuProps> =({items, action, defaultValue}) => {
 
     const [currentMenu, setCurrentMenu] = useState<string>(defaultValue);
 
-    /**
-     * TODO: Remove all any
-     */
-    const menuHandler = (e: any) => {
+    const menuHandler:handlerFunction = (e) => {
 
         dispatch(action(e.key as Sorting));
 

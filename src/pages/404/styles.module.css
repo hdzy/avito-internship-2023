@@ -6,6 +6,7 @@
     align-items: center;
     margin: 100px auto 0;
     color: #fff;
+    flex-wrap: wrap;
 }
 
 .title {

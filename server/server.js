@@ -5,19 +5,14 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 
-
-app.get('/games/amount', (req, res) => {
-    fetch("https://www.freetogame.com/api/games")
-        .then((res)=> res.json())
-        .then((data)=> {
-            const dataLength = JSON.stringify(data.length);
-            res.send(dataLength);
-        })
-        .catch((err)=>{
-            res.send(err);
-        });
-})
+/**
+ * Делаем запрос к API https://www.freetogame.com/api-doc
+ */
 app.get('/games', (req, res) => {
+
+    /**
+     * Отделяем кастомные query-параметры от тех, что принимает API и формируем запрос
+     */
 
     let subdomain = 'games';
     let requestQuery = '?';
@@ -37,14 +32,19 @@ app.get('/games', (req, res) => {
         .then((res)=> res.json())
         .then((data)=> {
 
+            /**
+             * На основе кастомных query-параметров изменяем запрос перед отправкой на фронт
+             */
+
             let modifiedData = data;
 
             if (req.query.direction) {
                 modifiedData = data.reverse();
             }
 
+             const amount = data.length;
              const dataSliced = modifiedData.slice(req.query.start, req.query.end);
-             res.send(dataSliced);
+             res.send({amount, games: dataSliced});
         })
         .catch((err)=>{
             res.send(err);

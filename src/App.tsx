@@ -22,7 +22,9 @@ function App() {
                 let gamesArray: GameWithTimer[] = JSON.parse(gamesLocal);
 
                 gamesArray = gamesArray.filter(e => {
-                    return e.timer > Date.now()
+                    if (e.timer) {
+                        return e.timer > Date.now()
+                    } else return false;
                 });
 
                 window.sessionStorage.setItem('games', JSON.stringify(gamesArray));
@@ -38,7 +40,6 @@ function App() {
                         <AppRouter/>
                     </BrowserRouter>
                 </div>
-
             </Provider>
 );
 }

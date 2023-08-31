@@ -1,7 +1,6 @@
 import {useParams} from "react-router";
 import styles from './styles.module.css';
 import React, {useEffect} from "react";
-import {Game, GameWithTimer} from "../../types";
 import axios from "axios";
 import Slider from "../../ui/Slider/Slider";
 import GameInfo from "../../components/GameInfo/GameInfo";
@@ -9,11 +8,8 @@ import LoadingElement from "../../ui/LoadingElement/LoadingElement";
 import { Modal } from "antd";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {errorGameLoading, gameLoading, updateGame} from "../../store/gameSlice";
+import {getGameFromStorage, savePage} from "../../functions";
 
-
-/**
- * TODO: Decomposition
- */
 export const GamePage = () => {
 
     const params = useParams();
@@ -30,51 +26,10 @@ export const GamePage = () => {
 
     useEffect(() => {
         if (game) {
-            savePage();
+            savePage(game);
         }
     }, [game]);
 
-    const savePage = () => {
-
-        const gameWithTimer: GameWithTimer = {
-            ...game,
-            timer: Date.now() + (1000 * 60 * 5)
-        }
-
-        let gamesLocal = window.sessionStorage.getItem('games')
-
-        if (gamesLocal) {
-            let gamesArray: GameWithTimer[] = JSON.parse(gamesLocal);
-
-            const isSaved = gamesArray.find(e => e.id === gameWithTimer.id);
-
-            if (!isSaved) {
-                gamesArray.push(gameWithTimer);
-                const newArr = JSON.stringify(gamesArray);
-
-                window.sessionStorage.setItem('games', newArr);
-            }
-
-        } else {
-            const newArr = JSON.stringify([gameWithTimer]);
-
-            window.sessionStorage.setItem('games', newArr);
-        }
-    }
-
-    const getGameFromStorage = (id: number) => {
-
-        let gamesLocal = window.sessionStorage.getItem('games');
-
-        if (gamesLocal) {
-            let gamesArray: GameWithTimer[] = JSON.parse(gamesLocal);
-            const game = gamesArray.find(e => e.id === id);
-
-            if (game) delete game.timer
-
-            return game as Game;
-        } else return;
-    }
 
     useEffect(() => {
 

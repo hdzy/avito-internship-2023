@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect} from 'react';
 import styles from './styles.module.css';
 import {useAppDispatch, useAppSelector} from "../../hooks";
-import {gamesError, gamesLoading, gamesReceived} from "../../store/gamesSlice";
+import {gamesError, gamesLoading, gamesReceived, updateAmount} from "../../store/gamesSlice";
 import axios from "axios";
 import Game from "../Game/Game";
 import LoadingElement from "../../ui/LoadingElement/LoadingElement";
@@ -28,8 +28,9 @@ const GamesContainer = () => {
         requestRemains,
     } = useAppSelector(state => state.games);
 
-    /*
-     * TODO: Do custom hook for this
+    /**
+     * Запрос к серверу на Node.js для получения данных
+     * Лучше было реализовать через createAsyncThunk, но не хватило времени
      */
 
     useEffect(() => {
@@ -47,7 +48,8 @@ const GamesContainer = () => {
         if (requestRemains >=0){
         axios.get(`http://localhost:3000/games/${requestQuery}` )
             .then(res => {
-                dispatch(gamesReceived(res.data));
+                dispatch(gamesReceived(res.data.games));
+                dispatch(updateAmount(Number(res.data.amount)));
             })
             .catch((err) => {
                 console.log(err);
@@ -83,7 +85,6 @@ const GamesContainer = () => {
     return (
         <div className={styles.container}>
             {
-                games.length < 1 ? <h1 style={{color: '#fff'}}>К сожалению, игр с данными параметрами не найдено</h1> :
                 games.map((e, index) => {
                     return <Game
                         key={e.id}
@@ -96,7 +97,6 @@ const GamesContainer = () => {
                         isLast={index === games.length - 1}
                     />
                 })
-
             }
             {
                 isLoading && loadingElems

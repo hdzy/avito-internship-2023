@@ -1,4 +1,4 @@
-import { ComponentType } from "react";
+import {BaseSyntheticEvent, ComponentType} from "react";
 
 export type Game = {
     id: number,
@@ -55,7 +55,7 @@ export interface GameWithTimer{
     release_date?: string,
     screenshots?: Screenshots[],
     minimum_system_requirements?: SystemRequirements | undefined,
-    timer?: any,
+    timer?: number,
 }
 
 export type GamesState = {
@@ -114,4 +114,12 @@ export enum SortDirection {
     ascending= 0,
     descending = 1,
 }
+
+type handlerElement = {
+    key: string,
+    keyPath: string[],
+    domEvent: BaseSyntheticEvent,
+};
+
+export type handlerFunction = (e: handlerElement) => void;
 

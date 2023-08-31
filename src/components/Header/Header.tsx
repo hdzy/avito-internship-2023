@@ -1,24 +1,26 @@
 import React from 'react';
-import {Link} from "react-router-dom";
 import styles from "./styles.module.css";
-import SortOrder from "../SortOrder/SortOrder";
-import SortMenu from "../SortMenu/SortMenu";
-import PlatformMenu from "../PlatformMenu/PlatformMenu";
-import TagsMenu from "../TagsMenu/TagsMenu";
-
+import {useLocation, useNavigate} from "react-router";
+import {IoArrowBackSharp} from "react-icons/io5";
+import HeaderFilters from "../HeaderFilters/HeaderFilters";
 
 const Header = () => {
+
+    const navigate = useNavigate();
+
+    const location = useLocation();
+
+    const isHome = location.pathname === '/'
+
     return (
         <div className={styles.container}>
-            <Link to={'/'} className={styles.title}>games</Link>
-            <TagsMenu/>
-            <div className={styles.rightContainer}>
-                <PlatformMenu/>
-                <div className={styles.sortContainer}>
-                    <SortOrder/>
-                    <SortMenu/>
-                </div>
+            {
+               !isHome && <IoArrowBackSharp onClick={() => navigate(-1)} color={'#fff'} size={40} cursor={'pointer'}/>
+            }
+            <div className={styles.container} style={{display: isHome ? 'flex' : 'none'}}>
+                <HeaderFilters/>
             </div>
+
         </div>
     );
 };

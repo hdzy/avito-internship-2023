@@ -1,7 +1,5 @@
 import React, {FC} from 'react';
 import {routes} from "../../routes/routes";
-import {Link} from "react-router-dom";
-import styles from "../../App.module.css";
 import {Route, Routes} from "react-router";
 const AppRouter: FC = () => {
     return (
