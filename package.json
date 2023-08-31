@@ -16,6 +16,7 @@
     "antd": "^5.8.5",
     "axios": "^1.4.0",
     "concurrently": "^8.2.1",
+    "cross-env": "~7.0.3",
     "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -31,7 +32,7 @@
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run front\"",
-    "front": " set PORT=3001 && react-scripts start",
+    "front": "react-scripts start",
     "server": "node ./server/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -56,10 +57,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-redux": "^7.1.26",
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
-    "cors": "^2.8.5",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "cors": "^2.8.5"
   }
 }
