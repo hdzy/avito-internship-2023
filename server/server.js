@@ -33,7 +33,7 @@ app.get('/games', (req, res) => {
         }
     }
 
-    fetch(`https://www.freetogame.com/api/${subdomain}?${requestQuery}`)
+    fetch(`https://www.freetogame.com/api/${subdomain}${requestQuery}`)
         .then((res)=> res.json())
         .then((data)=> {
 
