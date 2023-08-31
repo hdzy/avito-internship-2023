@@ -1,0 +1,9 @@
+.tagContainer {
+    padding: 5px 10px;
+    background: #e80fce;
+    color: #fff;
+    border-radius: 10px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}

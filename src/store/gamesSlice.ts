@@ -12,7 +12,8 @@ const initialState: GamesState = {
     },
     sort: Sorting.Relevance,
     sortDirection: SortDirection.ascending,
-    platform: Platforms.All
+    platform: Platforms.All,
+    tags: [],
 }
 
 
@@ -82,9 +83,39 @@ const gamesSlice = createSlice({
             }
         },
 
+        updateTags(state, action: PayloadAction<string>) {
+
+            const index = state.tags.indexOf(action.payload);
+
+            console.log(index)
+
+            if (index === -1) {
+                state.tags.push(action.payload);
+            } else {
+                console.log(state.tags[index]);
+                state.tags.splice(index, 1);
+            }
+
+            state.games = [];
+
+            state.gamesLimits = {
+                start: 0,
+                end: 12,
+            }
+        }
+
     }
 });
 
-export const { gamesReceived, updateGamesLimits, updateAmount, gamesLoading, updateSortStatus, updateSortDirection, updatePlatformStatus } = gamesSlice.actions;
+export const {
+    gamesReceived,
+    updateGamesLimits,
+    updateAmount,
+    gamesLoading,
+    updateSortStatus,
+    updateSortDirection,
+    updatePlatformStatus,
+    updateTags,
+} = gamesSlice.actions;
 
 export default gamesSlice.reducer;

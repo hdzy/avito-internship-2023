@@ -5,13 +5,13 @@
     flex-wrap: wrap;
     margin: 0 auto;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0 2em;
     row-gap: 2em;
+    gap: 50px;
 }
 
 .title {
-    display: block;
     text-decoration: none;
     width: max-content;
     font-size: 45px;
@@ -24,4 +24,11 @@
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+.rightContainer {
+    display: flex;
+    gap: 50px;
+    margin-left: auto;
+    flex-wrap: wrap;
 }

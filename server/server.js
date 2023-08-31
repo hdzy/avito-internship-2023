@@ -19,14 +19,21 @@ app.get('/games/amount', (req, res) => {
 })
 app.get('/games', (req, res) => {
 
+    let subdomain = 'games';
     let requestQuery = '?';
+
     for (const [key, value] of Object.entries(req.query)) {
         if (key !== 'start' && key !== 'end' && key !== 'direction') {
+
+            if (key === 'tag') {
+                subdomain = 'filter';
+            }
+
             requestQuery += `${key}=${value}&`;
         }
     }
 
-    fetch(`https://www.freetogame.com/api/games/${requestQuery}`)
+    fetch(`https://www.freetogame.com/api/${subdomain}?${requestQuery}`)
         .then((res)=> res.json())
         .then((data)=> {
 
@@ -43,6 +50,7 @@ app.get('/games', (req, res) => {
             res.send(err);
         });
 });
+
 
 app.get('/game', (req, res) => {
     fetch(`https://www.freetogame.com/api/game?id=${req.query.id}`)

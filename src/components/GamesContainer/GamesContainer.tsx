@@ -15,12 +15,19 @@ const GamesContainer = () => {
 
     const dispatch = useAppDispatch();
 
-    const games = useAppSelector(state => state.games.games);
-    const isLoading = useAppSelector(state => state.games.isLoading);
-    const gamesLimits = useAppSelector((state) => state.games.gamesLimits);
-    const sort = useAppSelector(state => state.games.sort);
-    const sortDirection = useAppSelector(state => state.games.sortDirection);
-    const platform = useAppSelector(state => state.games.platform);
+    const {
+        games,
+        isLoading,
+        gamesLimits,
+        sort,
+        sortDirection,
+        platform,
+        tags
+    } = useAppSelector(state => state.games);
+
+    /*
+     * TODO: Do custom hook for this
+     */
 
     useEffect(() => {
         dispatch(gamesLoading());
@@ -29,7 +36,8 @@ const GamesContainer = () => {
         ?start=${gamesLimits.start}&end=${gamesLimits.end}
         ${sort ? `&sort-by=${sort}` : ''}
         ${sortDirection ? `&direction=${sortDirection}` : ''}
-        ${platform ? `&platform=${platform}` : ''}`
+        ${platform ? `&platform=${platform}` : ''}
+        ${tags.length > 0 ? `&tag=${tags.join('.')}` : ''}`
             .replaceAll('\n', '')
             .replaceAll(' ', '');
 

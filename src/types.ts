@@ -1,4 +1,4 @@
-import {Component, ComponentType, ReactElement, ReactNode} from "react";
+import { ComponentType } from "react";
 
 export type Game = {
     id: number,
@@ -48,6 +48,7 @@ export type GamesState = {
     sort: Sorting,
     sortDirection: SortDirection,
     platform: Platforms,
+    tags: string[],
 }
 
 type GamesLimits = {
@@ -61,7 +62,7 @@ export type RouteType = {
 }
 
 export type FilterItem = {
-    key: Sorting | Platforms,
+    key: Sorting | Platforms | string,
     label: JSX.Element,
 }
 
@@ -78,7 +79,6 @@ export enum Platforms {
     Browser = 'browser',
 }
 
-
 /**
  * 0 - в порядке возрастания
  * 1 - в порядке убывания
@@ -87,3 +87,4 @@ export enum SortDirection {
     ascending= 0,
     descending = 1,
 }
+

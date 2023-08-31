@@ -11,3 +11,10 @@
 .menuElement:hover {
     color: #e80fce;
 }
+
+.tagsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 600px;
+}

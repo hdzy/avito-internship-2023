@@ -1,7 +1,7 @@
 import React from 'react';
 import Menu from "../../ui/Menu/Menu";
-import {updatePlatformStatus, updateSortStatus} from "../../store/gamesSlice";
-import {Platforms, Sorting} from "../../types";
+import {updatePlatformStatus} from "../../store/gamesSlice";
+import {Platforms} from "../../types";
 import styles from "../../ui/Menu/styles.module.css";
 
 

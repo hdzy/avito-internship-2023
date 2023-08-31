@@ -16,6 +16,8 @@ type GameProps = Omit<Game,
 const GameInfo: FC<GameProps>= ({title, genre, platform, publisher, description, developer, release_date, minimum_system_requirements}) => {
     return (
         <div className={styles.container}>
+            <h1 className={styles.title}>{title}</h1>
+            <h2 className={styles.description}>{description}</h2>
             <div className={styles.row}>
                 <div>
                     <p className={styles.text}>Платформа: <span className={styles.purple}>{platform}</span></p>

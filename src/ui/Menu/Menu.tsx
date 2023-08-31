@@ -1,8 +1,7 @@
 import React, {FC, useState} from 'react';
 import styles from './styles.module.css';
 import {Dropdown, Space} from "antd";
-import {FilterItem, GamesState, Sorting} from "../../types";
-import {updateSortStatus} from "../../store/gamesSlice";
+import {FilterItem, Sorting} from "../../types";
 import {useAppDispatch} from "../../hooks";
 import {ActionCreatorWithoutPayload, ActionCreatorWithPayload} from "@reduxjs/toolkit";
 
